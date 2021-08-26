@@ -2,7 +2,9 @@ const {spawn} = require('child_process')
 const {readFileSync, writeFileSync} = require('fs')
 const {join} = require('path')
 
-let timeToRun, problemSize, output, total = 0, avg = 0, trials = 0, min = 9999, max = 0
+let timeToRun, problemSize, output, residual
+let total = 0, avg = 0, previousTrials = 0, trials = 0, min = 9999, max = 0
+let isRun = false
 const problemSizes = []
 
 function handleError(error) {
@@ -16,7 +18,7 @@ function readConfig() {
         timeToRun = parseInt(lines[4]) * 60000
         output = lines[10].toLowerCase() === 'true'
         for (const problemSize of lines[7].split(' ')) {
-            problemSizes.push(parseInt(problemSize))
+            problemSizes.push(problemSize)
         }
     }
     catch (error) {
@@ -36,8 +38,7 @@ function startRun() {
         catch (error) {
             handleError(error)
         }
-        let isRun = false
-        let residual
+        isRun = false
         const startTime = Date.now()
         const linpack = spawn('linpack_xeon64.exe', ['config'])
         linpack.stdout.on('data', (data) => {
@@ -47,7 +48,7 @@ function startRun() {
             }
             const element = line.split(/\s+/)
             if (!isRun) {
-                if (element[0] == problemSize && element[1] == problemSize) {
+                if (element[0] === problemSize && element[1] === problemSize) {
                     isRun = true
                     residual = element[5]
                     min = max = avg = total = parseFloat(element[4])
@@ -74,9 +75,10 @@ function startRun() {
                 }
                 if ((Date.now() - startTime) >= timeToRun) {
                     printStats()
+                    console.log(`Passed ${problemSize} problem size`)
                     linpack.kill()
                     min = 9999
-                    max = avg = trials = total = 0
+                    max = avg = trials = previousTrials = total = 0
                     resolve()
                 }
             }
@@ -91,12 +93,17 @@ function startRun() {
 async function main() {
     readConfig()
     setInterval(() => {
-        printStats()
+        if (trials > previousTrials) {
+            printStats()
+            previousTrials = trials
+        }
     }, 10000)
+    console.log('Linpack Extended 0.1.1\nhttps://github.com/BoringBoredom/Linpack-Extended\nTest started')
     for (const size of problemSizes) {
         problemSize = size
         await startRun()
     }
+    console.log('Test finished')
     process.exit()
 }
 
