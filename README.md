@@ -1,3 +1,5 @@
+# [Download](https://github.com/BoringBoredom/Linpack-Extended/archive/refs/heads/master.zip)
+
 Linpack Extended is a stress test for 64-bit Intel processors. It is based on the latest [Intel Math Kernel Library](https://software.intel.com/content/www/us/en/develop/articles/intel-mkl-benchmarks-suite.html).
 
 #### Features
