@@ -98,7 +98,7 @@ async function main() {
             previousTrials = trials
         }
     }, 15000)
-    console.log('Linpack Extended 0.1.2\nhttps://github.com/BoringBoredom/Linpack-Extended\nTest started')
+    console.log('Linpack Extended\nhttps://github.com/BoringBoredom/Linpack-Extended\nTest started')
     for (const size of problemSizes) {
         problemSize = size
         console.log(`Current problem size: ${problemSize}`)
