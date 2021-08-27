@@ -8,17 +8,18 @@ function startRun(problemSize, timeToRun, output) {
         let isRun = false
         let residual
         let total = 0, avg = 0, previousTrials = 0, trials = 0, min = 9999, max = 0
+        console.log(`Current problem size: ${problemSize}`)
         const startTime = Date.now()
         const timer = setInterval(() => {
             if (trials > previousTrials) {
                 console.log(`Problem size: ${problemSize} | Trials completed: ${trials} | GFlops - Min: ${min} Avg: ${avg.toFixed(4)} Max: ${max}`)
                 previousTrials = trials
-            }
-            if ((Date.now() - startTime) >= timeToRun) {
-                clearInterval(timer)
-                linpack.kill()
-                console.log(`Passed ${problemSize} problem size`)
-                resolve()
+                if ((Date.now() - startTime) >= timeToRun) {
+                    console.log(`Passed ${problemSize} problem size`)
+                    clearInterval(timer)
+                    linpack.kill()
+                    resolve()
+                }
             }
         }, 10000)
         const linpack = spawn('linpack_xeon64.exe', ['config'])
@@ -38,8 +39,8 @@ function startRun(problemSize, timeToRun, output) {
             }
             else if (element.length > 2) {
                 if (element[5] !== residual || element[7] !== 'pass') {
-                    linpack.kill()
                     console.log('FAIL OR RESIDUAL MISMATCH')
+                    linpack.kill()
                     process.exit()
                 }
                 const gflops = parseFloat(element[4])
@@ -55,8 +56,8 @@ function startRun(problemSize, timeToRun, output) {
             }
         })
         linpack.stderr.on('data', (data) => {
-            linpack.kill()
             console.error(data.toString())
+            linpack.kill()
             process.exit()
         })
     })
@@ -66,11 +67,9 @@ async function main() {
     const lines = readFileSync(join(__dirname, '..', 'config.ini'), 'utf8').split('\n')
     console.log('Linpack Extended\nhttps://github.com/BoringBoredom/Linpack-Extended\nTest started')
     for (const size of lines[7].split(' ')) {
-        console.log(`Current problem size: ${size}`)
-        await startRun(size, parseInt(lines[4]) * 60000, lines[10].toLowerCase() === 'true')
+        await startRun(parseInt(size).toString(), parseInt(lines[4]) * 60000, parseInt(lines[10]) === 1)
     }
     console.log('Test finished')
-    process.exit()
 }
 
 main()
