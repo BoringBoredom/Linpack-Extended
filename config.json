@@ -1,6 +1,7 @@
 {
     "settings": {
-        "reduce terminal output": true
+        "reduce terminal output": true,
+        "stop after residual mismatch": true
     },
     "tests": [
         {
