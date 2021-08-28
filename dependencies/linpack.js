@@ -2,9 +2,9 @@ const {spawn} = require('child_process')
 const {readFileSync, writeFileSync} = require('fs')
 const {join} = require('path')
 
-function startRun(problemSize, timeToRun, output) {
+function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion, timeToRun, reducedOutput) {
     return new Promise((resolve) => {
-        writeFileSync('config', `\n\n1\n${problemSize}\n${problemSize}\n99999\n4`)
+        writeFileSync('config', `\n\n1\n${problemSize}\n${leadingDimension}\n99999\n${alignmentValue}`)
         let isRun = false
         let residual
         let total = 0, avg = 0, previousTrials = 0, trials = 0, min = 9999, max = 0
@@ -22,10 +22,10 @@ function startRun(problemSize, timeToRun, output) {
                 }
             }
         }, 10000)
-        const linpack = spawn('linpack_xeon64.exe', ['config'])
+        const linpack = spawn(join(__dirname, libraryVersion, 'linpack_xeon64.exe'), ['config'])
         linpack.stdout.on('data', (data) => {
             const line = data.toString()
-            if (output) {
+            if (!reducedOutput) {
                 process.stdout.write(line)
             }
             const element = line.split(/\s+/)
@@ -64,10 +64,10 @@ function startRun(problemSize, timeToRun, output) {
 }
 
 async function main() {
-    const lines = readFileSync(join(__dirname, '..', 'config.ini'), 'utf8').split('\n')
+    const config = JSON.parse(readFileSync(join(__dirname, '..', 'config.json')))
     console.log('Linpack Extended\nhttps://github.com/BoringBoredom/Linpack-Extended\nTest started')
-    for (const size of lines[7].split(' ')) {
-        await startRun(parseInt(size).toString(), parseInt(lines[4]) * 60000, parseInt(lines[10]) === 1)
+    for (const test of config.tests) {
+        await startRun(test['problem size'].toString(), test['leading dimension'], test['alignment value'], test['library version'], test['minutes'] * 60000, config.settings['reduce terminal output'])
     }
     console.log('Test finished')
 }

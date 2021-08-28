@@ -1,0 +1,28 @@
+{
+    "settings": {
+        "reduce terminal output": true
+    },
+    "tests": [
+        {
+            "minutes": 10,
+            "problem size": 22640,
+            "leading dimension": 22640,
+            "alignment value": 4,
+            "library version": "2018.3.011"
+        },
+        {
+            "minutes": 10,
+            "problem size": 8144,
+            "leading dimension": 8144,
+            "alignment value": 4,
+            "library version": "2018.3.011"
+        },
+        {
+            "minutes": 10,
+            "problem size": 35024,
+            "leading dimension": 35024,
+            "alignment value": 4,
+            "library version": "2018.3.011"
+        }
+    ]
+}
