@@ -1,29 +1,39 @@
 {
+    "test order": [
+        1, 3, 2, 4
+    ],
     "settings": {
         "reduce terminal output": true,
         "stop after residual mismatch": true
     },
-    "tests": [
-        {
-            "minutes": 10,
-            "problem size": 22640,
-            "leading dimension": 22640,
+    "tests": {
+        "1": {
+            "minutes": 20,
+            "problem size": 35024,
+            "leading dimension": 35024,
             "alignment value": 4,
             "library version": "2018.3.011"
         },
-        {
-            "minutes": 10,
+        "2": {
+            "minutes": 20,
             "problem size": 8144,
             "leading dimension": 8144,
             "alignment value": 4,
             "library version": "2018.3.011"
         },
-        {
-            "minutes": 10,
+        "3": {
+            "minutes": 20,
             "problem size": 35024,
             "leading dimension": 35024,
             "alignment value": 4,
-            "library version": "2018.3.011"
+            "library version": "2021.2.0.109"
+        },
+        "4": {
+            "minutes": 20,
+            "problem size": 8144,
+            "leading dimension": 8144,
+            "alignment value": 4,
+            "library version": "2021.2.0.109"
         }
-    ]
+    }
 }

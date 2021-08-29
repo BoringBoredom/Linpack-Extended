@@ -72,8 +72,8 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
 async function main() {
     const config = JSON.parse(readFileSync(join(__dirname, '..', 'config.json')))
     console.log('Linpack Extended\nhttps://github.com/BoringBoredom/Linpack-Extended')
-    for (const test of config.tests) {
-        await startRun(test['problem size'].toString(), test['leading dimension'], test['alignment value'], test['library version'], test['minutes'] * 60000, config.settings['reduce terminal output'], config.settings['stop after residual mismatch'])
+    for (const test of config['test order']) {
+        await startRun(config.tests[test.toString()]['problem size'].toString(), config.tests[test.toString()]['leading dimension'], config.tests[test.toString()]['alignment value'], config.tests[test.toString()]['library version'], config.tests[test.toString()]['minutes'] * 60000, config.settings['reduce terminal output'], config.settings['stop after residual mismatch'])
     }
     console.log('All tests finished')
 }
