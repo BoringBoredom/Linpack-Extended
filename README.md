@@ -5,7 +5,7 @@ Linpack Extended is a stress test for 64-bit Intel processors. It is based on th
 ### Features
 - chain different tests with different settings (time to run, problem size, leading dimension, alignment value and library version)
 - specify order of tests
-- track Min/Avg/Max GFlops per problem size
+- optionally track Min/Avg/Max GFlops per problem size
 - optionally stop test when residuals mismatch
 - optionally reduce command line output to decrease unnecessary resource usage at lower problem sizes
 

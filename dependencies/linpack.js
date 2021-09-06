@@ -2,17 +2,19 @@ const {spawn} = require('child_process')
 const {readFileSync, writeFileSync} = require('fs')
 const {join} = require('path')
 
-function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion, timeToRun, reducedOutput, residualCheck) {
+function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion, timeToRun, reducedOutput, statTracker, residualCheck) {
     return new Promise((resolve) => {
         writeFileSync('config', `\n\n1\n${problemSize}\n${leadingDimension}\n99999\n${alignmentValue}`)
         let isRun = false
-        let residual
-        let total = 0, avg = 0, previousTrials = 0, trials = 0, min = 9999, max = 0
+        let residual, min, avg, max, total
+        let trials = 0, previousTrials = 0
         console.log(`\nTime to run: ${timeToRun / 60000} minutes\nProblem size: ${problemSize}\nLeading Dimension: ${leadingDimension}\nAlignment Value: ${alignmentValue}\nLibrary version: ${libraryVersion}\n`)
         const startTime = Date.now()
         const timer = setInterval(() => {
             if (trials > previousTrials) {
-                console.log(`Trials completed: ${trials} | GFlops - Min: ${min} Avg: ${avg.toFixed(4)} Max: ${max}`)
+                if (statTracker) {
+                    console.log(`Trials completed: ${trials} | GFlops - Min: ${min} Avg: ${avg.toFixed(4)} Max: ${max}`)
+                }
                 previousTrials = trials
                 if ((Date.now() - startTime) >= timeToRun) {
                     clearInterval(timer)
@@ -32,8 +34,10 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
                 if (element[0] === problemSize && element[1] === problemSize) {
                     isRun = true
                     residual = element[5]
-                    min = max = avg = total = parseFloat(element[4])
                     trials++
+                    if (statTracker) {
+                        min = max = avg = total = parseFloat(element[4])
+                    }
                 }
             }
             else if (element.length > 2) {
@@ -49,16 +53,18 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
                         process.exit()
                     }
                 }
-                const gflops = parseFloat(element[4])
-                if (gflops < min) {
-                    min = gflops
-                }
-                if (gflops > max) {
-                    max = gflops
-                }
-                total += gflops
                 trials++
-                avg = total / trials
+                if (statTracker) {
+                    const gflops = parseFloat(element[4])
+                    if (gflops < min) {
+                        min = gflops
+                    }
+                    if (gflops > max) {
+                        max = gflops
+                    }
+                    total += gflops
+                    avg = total / trials
+                }
             }
         })
         linpack.stderr.on('data', (data) => {
@@ -73,7 +79,17 @@ async function main() {
     const config = JSON.parse(readFileSync(join(__dirname, '..', 'config.json')))
     console.log('Linpack Extended\nhttps://github.com/BoringBoredom/Linpack-Extended')
     for (const test of config['test order']) {
-        await startRun(config.tests[test.toString()]['problem size'].toString(), config.tests[test.toString()]['leading dimension'], config.tests[test.toString()]['alignment value'], config.tests[test.toString()]['library version'], config.tests[test.toString()]['minutes'] * 60000, config.settings['reduce terminal output'], config.settings['stop after residual mismatch'])
+        const currentTest = config.tests[test.toString()]
+        await startRun(
+            currentTest['problem size'].toString(),
+            currentTest['leading dimension'],
+            currentTest['alignment value'],
+            currentTest['library version'],
+            currentTest['minutes'] * 60000,
+            (currentTest['problem size'] < config.settings['reduce output below X problem size']) ? true : false,
+            (currentTest['problem size'] < config.settings['track stats below X problem size']) ? true : false,
+            config.settings['stop after residual mismatch']
+        )
     }
     console.log('All tests finished')
 }

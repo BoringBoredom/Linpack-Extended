@@ -3,68 +3,69 @@
         5, 1, 2, 3, 4, 6
     ],
     "settings": {
-        "reduce terminal output": true,
+        "reduce output below X problem size": 60000,
+        "track stats below X problem size": 60000,
         "stop after residual mismatch": true
     },
     "tests": {
         "1": {
-            "minutes": 10,
+            "minutes": 15,
             "problem size": 7920,
             "leading dimension": 7920,
             "alignment value": 4,
             "library version": "2021.2.0.109"
         },
         "2": {
-            "minutes": 10,
+            "minutes": 15,
             "problem size": 11184,
             "leading dimension": 11184,
             "alignment value": 4,
             "library version": "2021.2.0.109"
         },
         "3": {
-            "minutes": 10,
+            "minutes": 15,
             "problem size": 15824,
             "leading dimension": 15824,
             "alignment value": 4,
             "library version": "2021.2.0.109"
         },
         "4": {
-            "minutes": 10,
+            "minutes": 15,
             "problem size": 22384,
             "leading dimension": 22384,
             "alignment value": 4,
             "library version": "2021.2.0.109"
         },
         "5": {
-            "minutes": 20,
+            "minutes": 30,
             "problem size": 31632,
             "leading dimension": 31632,
             "alignment value": 1,
             "library version": "2021.2.0.109"
         },
         "6": {
-            "minutes": 20,
+            "minutes": 30,
             "problem size": 35376,
             "leading dimension": 35376,
             "alignment value": 1,
             "library version": "2021.2.0.109"
         },
         "7": {
-            "minutes": 20,
+            "minutes": 30,
             "problem size": 38736,
             "leading dimension": 38736,
             "alignment value": 1,
             "library version": "2021.2.0.109"
         },
         "8": {
-            "minutes": 20,
+            "minutes": 30,
             "problem size": 41840,
             "leading dimension": 41840,
             "alignment value": 1,
             "library version": "2021.2.0.109"
         },
         "9": {
-            "minutes": 20,
+            "minutes": 30,
             "problem size": 44752,
             "leading dimension": 44752,
             "alignment value": 1,
