@@ -23,7 +23,7 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
                 }
             }
         }, 20000)
-        const linpack = spawn(join(__dirname, libraryVersion, 'linpack_xeon64.exe'), ['config'])
+        const linpack = spawn('linpack_xeon64.exe', [join(__dirname, 'config')], {cwd: join(__dirname, libraryVersion), env: {KMP_AFFINITY: 'nowarnings,compact,1,0,granularity=fine'}})
         linpack.stdout.on('data', (data) => {
             const line = data.toString()
             if (!reducedOutput) {
