@@ -8,12 +8,12 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
         let isRun = false
         let residual, min, avg, max, total
         let trials = 0, previousTrials = 0
-        console.log(`\nTime to run: ${timeToRun / 60000} minutes\nProblem size: ${problemSize}\nLeading Dimension: ${leadingDimension}\nAlignment Value: ${alignmentValue}\nLibrary version: ${libraryVersion}\n`)
+        console.log(`\nStart time: ${new Date().toLocaleTimeString([], {hour12: false, hour: '2-digit', minute: '2-digit'})}\nTime to run: ${timeToRun / 60000} minutes\nProblem size: ${problemSize}\nLeading Dimension: ${leadingDimension}\nAlignment Value: ${alignmentValue}\nLibrary version: ${libraryVersion}\n`)
         const startTime = Date.now()
         const timer = setInterval(() => {
             if (trials > previousTrials) {
                 if (statTracker) {
-                    console.log(`Trials completed: ${trials} | GFlops - Min: ${min} Avg: ${avg.toFixed(4)} Max: ${max}`)
+                    console.log(`Trials completed: ${trials.toString().padStart(4, '0')} | GFlops - Min: ${min.toFixed(4)} Avg: ${avg.toFixed(4)} Max: ${max.toFixed(4)}`)
                 }
                 previousTrials = trials
                 if ((Date.now() - startTime) >= timeToRun) {
