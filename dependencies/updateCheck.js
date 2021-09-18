@@ -16,7 +16,7 @@ get(process.argv[2], (res) => {
         const latestVersion = data.split('.')
         const currentVersion = readFileSync('version', 'utf8').split('.')
         for (let index = 0; index < 3; index++) {
-            if (latestVersion[index] > currentVersion[index]) {
+            if (parseInt(latestVersion[index]) > parseInt(currentVersion[index])) {
                 const splitURL = process.argv[2].split('/')
                 const rl = createInterface({
                     input: process.stdin,
