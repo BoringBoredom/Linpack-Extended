@@ -16,6 +16,7 @@ Linpack Extended is a stress test for 64-bit Intel processors. It is based on th
 - 2020.4.003
 - 2021.1.2.001
 - 2021.2.0.109
+- 2021.3.1.0
 
 ### Requirements
 - Windows 7+ (also works on WinPE)

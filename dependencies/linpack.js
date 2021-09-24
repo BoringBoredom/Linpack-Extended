@@ -8,7 +8,19 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
         let isRun = false
         let residual, min, avg, max, total
         let trials = 0, previousTrials = 0
-        console.log(`\nStart time: ${new Date().toLocaleTimeString([], {hour12: false, hour: '2-digit', minute: '2-digit'})}\nTime to run: ${timeToRun / 60000} minutes\nProblem size: ${problemSize}\nLeading Dimension: ${leadingDimension}\nAlignment Value: ${alignmentValue}\nLibrary version: ${libraryVersion}\n`)
+        console.log(
+            '\n' +
+            `Start time: ${new Date().toLocaleTimeString([], {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit'
+            })}\n` +
+            `Time to run: ${timeToRun / 60000} minutes\n` +
+            `Problem size: ${problemSize}\n` +
+            `Leading Dimension: ${leadingDimension}\n` +
+            `Alignment Value: ${alignmentValue}\n` +
+            `Library version: ${libraryVersion}\n`
+        )
         const startTime = Date.now()
         const timer = setInterval(() => {
             if (trials > previousTrials) {
@@ -23,7 +35,12 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
                 }
             }
         }, 20000)
-        const linpack = spawn('linpack_xeon64.exe', [join(__dirname, 'config')], {cwd: join(__dirname, libraryVersion), env: {KMP_AFFINITY: 'nowarnings,compact,1,0,granularity=fine'}})
+        const linpack = spawn(
+            'linpack_xeon64.exe', [join(__dirname, 'config')], {
+                cwd: join(__dirname, libraryVersion),
+                env: {KMP_AFFINITY: 'nowarnings,compact,1,0,granularity=fine'}
+            }
+        )
         linpack.stdout.on('data', (data) => {
             const line = data.toString()
             if (!reducedOutput) {
@@ -77,7 +94,10 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
 
 async function main() {
     const config = JSON.parse(readFileSync(join(__dirname, '..', 'config.json')))
-    console.log('Linpack Extended\nhttps://github.com/BoringBoredom/Linpack-Extended')
+    console.log(
+        'Linpack Extended\n' +
+        'https://github.com/BoringBoredom/Linpack-Extended'
+    )
     for (const test of config['test order']) {
         const currentTest = config.tests[test.toString()]
         await startRun(
