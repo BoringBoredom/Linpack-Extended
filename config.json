@@ -3,8 +3,8 @@
         6, 1, 2, 3, 4, 5
     ],
     "settings": {
-        "reduce output below X problem size": 60000,
-        "track stats below X problem size": 60000,
+        "reduce output below X problem size": 0,
+        "track stats below X problem size": 0,
         "stop after residual mismatch": true
     },
     "tests": {
