@@ -2,9 +2,9 @@ const {spawn} = require('child_process')
 const {readFileSync, writeFileSync} = require('fs')
 const {join} = require('path')
 
-function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion, timeToRun, reducedOutput, statTracker, residualCheck) {
+function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, reducedOutput, statTracker, residualCheck) {
     return new Promise((resolve) => {
-        writeFileSync('config', `\n\n1\n${problemSize}\n${leadingDimension}\n99999\n${alignmentValue}`)
+        writeFileSync('temp', `\n\n1\n${problemSize}\n${leadingDimension}\n99999\n${alignmentValue}`)
         let isRun = false
         let residual, min, avg, max, total
         let trials = 0, previousTrials = 0
@@ -18,8 +18,7 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
             `Time to run: ${timeToRun / 60000} minutes\n` +
             `Problem size: ${problemSize}\n` +
             `Leading Dimension: ${leadingDimension}\n` +
-            `Alignment Value: ${alignmentValue}\n` +
-            `Library version: ${libraryVersion}\n`
+            `Alignment Value: ${alignmentValue}\n`
         )
         const startTime = Date.now()
         const timer = setInterval(() => {
@@ -36,8 +35,8 @@ function startRun(problemSize, leadingDimension, alignmentValue, libraryVersion,
             }
         }, 20000)
         const linpack = spawn(
-            'linpack_xeon64.exe', [join(__dirname, 'config')], {
-                cwd: join(__dirname, libraryVersion),
+            'linpack_xeon64.exe', [join(__dirname, 'temp')], {
+                cwd: join(__dirname, 'linpack'),
                 env: {KMP_AFFINITY: 'nowarnings,compact,1,0,granularity=fine'}
             }
         )
@@ -104,7 +103,6 @@ async function main() {
             currentTest['problem size'].toString(),
             currentTest['leading dimension'],
             currentTest['alignment value'],
-            currentTest['library version'],
             currentTest['minutes'] * 60000,
             (currentTest['problem size'] < config.settings['reduce output below X problem size']) ? true : false,
             (currentTest['problem size'] < config.settings['track stats below X problem size']) ? true : false,
