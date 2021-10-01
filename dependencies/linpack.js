@@ -58,13 +58,13 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
             }
             else if (element.length > 2) {
                 if (element[7] !== 'pass') {
-                    console.log('FAIL')
+                    console.log('\nFAIL')
                     linpack.kill()
                     process.exit()
                 }
                 if (residualCheck) {
                     if (element[5] !== residual) {
-                        console.log('RESIDUAL MISMATCH')
+                        console.log('\nRESIDUAL MISMATCH')
                         linpack.kill()
                         process.exit()
                     }
@@ -109,7 +109,7 @@ async function main() {
             config.settings['stop after residual mismatch']
         )
     }
-    console.log('All tests finished')
+    console.log('\nAll tests finished')
 }
 
 main()
