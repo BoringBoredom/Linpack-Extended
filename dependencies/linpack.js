@@ -17,8 +17,9 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
             })}\n` +
             `Time to run: ${timeToRun / 60000} minutes\n` +
             `Problem size: ${problemSize}\n` +
-            `Leading Dimension: ${leadingDimension}\n` +
-            `Alignment Value: ${alignmentValue}\n`
+            `Leading dimension: ${leadingDimension}\n` +
+            `Alignment value: ${alignmentValue}\n` +
+            `Residual checks: ${residualCheck ? 'ON' : 'OFF'}\n`
         )
         const startTime = Date.now()
         const timer = setInterval(() => {
@@ -56,12 +57,12 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
             }
             else if (element.length > 2) {
                 if (element[7] !== 'pass') {
-                    console.log('\nFAIL')
+                    console.log('\n\nFAIL - severe instability detected\n\n')
                     linpack.kill()
                     process.exit()
                 }
                 if (residualCheck && element[5] !== residual) {
-                    console.log('\nRESIDUAL MISMATCH')
+                    console.log('\n\nRESIDUAL MISMATCH - instability detected (residual checks can be turned off in the config)\n\n')
                     linpack.kill()
                     process.exit()
                 }
@@ -105,7 +106,7 @@ async function main() {
             config.settings['stop after residual mismatch']
         )
     }
-    console.log('\nAll tests finished')
+    console.log(`\n\nAll tests successfully passed - Residual checks are ${residualCheck ? 'ON' : 'OFF'}\n\n`)
 }
 
 main()
