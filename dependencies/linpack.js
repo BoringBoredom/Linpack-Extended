@@ -47,12 +47,14 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
                 process.stdout.write(line)
             }
             const element = line.split(/\s+/)
-            if (!isRun && element[0] === problemSize && element[1] === problemSize) {
-                isRun = true
-                residual = element[5]
-                trials++
-                if (statTracker) {
-                    min = max = avg = total = parseFloat(element[4])
+            if (!isRun) {
+                if (element[0] === problemSize && element[1] === problemSize) {
+                    isRun = true
+                    residual = element[5]
+                    trials++
+                    if (statTracker) {
+                        min = max = avg = total = parseFloat(element[4])
+                    }
                 }
             }
             else if (element.length > 2) {
