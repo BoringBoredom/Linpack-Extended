@@ -22,7 +22,7 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
             `Residual checks: ${residualCheck ? 'ON' : 'OFF'}\n`
         )
         const startTime = Date.now()
-        const timer = setInterval(() => {
+        const timer = setInterval(async () => {
             if (trials > previousTrials) {
                 if (statTracker) {
                     console.log(`Trials completed: ${trials.toString().padStart(4, '0')} | GFlops - Min: ${min.toFixed(4)} Avg: ${avg.toFixed(4)} Max: ${max.toFixed(4)}`)
@@ -31,6 +31,7 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
                 if ((Date.now() - startTime) >= timeToRun) {
                     clearInterval(timer)
                     linpack.kill()
+                    await new Promise(r => setTimeout(r, 5000))
                     resolve()
                 }
             }
