@@ -109,7 +109,7 @@ async function main() {
             config.settings['stop after residual mismatch']
         )
     }
-    console.log(`\n\nAll tests successfully passed - Residual checks are ${residualCheck ? 'ON' : 'OFF'}\n\n`)
+    console.log(`\n\nAll tests successfully passed - Residual checks are ${config.settings['stop after residual mismatch'] ? 'ON' : 'OFF'}\n\n`)
 }
 
 main()
