@@ -11,5 +11,5 @@ Linpack Extended is a stress test for 64-bit Intel processors. It is based on th
 
 ### Requirements
 - Windows 7+ (also works on WinPE)
-- vcruntime140.dll ([Visual C++ 2015-2019](https://support.microsoft.com/en-us/topic/the-latest-supported-visual-c-downloads-2647da03-1eea-4433-9aff-95f26a218cc0))
+- [vcruntime140.dll](https://aka.ms/vs/17/release/vc_redist.x64.exe)
 - 64-bit Intel processor

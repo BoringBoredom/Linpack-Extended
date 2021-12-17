@@ -104,8 +104,8 @@ async function main() {
             currentTest['leading dimension'],
             currentTest['alignment value'],
             currentTest['minutes'] * 60000,
-            (currentTest['problem size'] < config.settings['reduce output below X problem size']) ? true : false,
-            (currentTest['problem size'] < config.settings['track stats below X problem size']) ? true : false,
+            currentTest['problem size'] < config.settings['reduce output below X problem size'],
+            currentTest['problem size'] < config.settings['track stats below X problem size'],
             config.settings['stop after residual mismatch']
         )
     }
