@@ -1,13 +1,15 @@
-const {spawn} = require('child_process')
-const {readFileSync, writeFileSync} = require('fs')
-const {join} = require('path')
+const { spawn } = require('child_process')
+const { writeFileSync } = require('fs')
+const { join } = require('path')
 
 function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, reducedOutput, statTracker, residualCheck) {
     return new Promise((resolve) => {
         writeFileSync('temp', `\n\n1\n${problemSize}\n${leadingDimension}\n99999\n${alignmentValue}`)
+
         let isRun = false
         let residual, min, avg, max, total
         let trials = 0, previousTrials = 0
+
         console.log(
             '\n' +
             `Start time: ${new Date().toLocaleTimeString([], {
@@ -21,7 +23,9 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
             `Alignment value: ${alignmentValue}\n` +
             `Residual checks: ${residualCheck ? 'ON' : 'OFF'}\n`
         )
+
         const startTime = Date.now()
+
         const timer = setInterval(async () => {
             if (trials > previousTrials) {
                 if (statTracker) {
@@ -36,10 +40,11 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
                 }
             }
         }, 20000)
+
         const linpack = spawn(
             'linpack_xeon64.exe', [join(__dirname, 'temp')], {
                 cwd: join(__dirname, 'linpack'),
-                env: {KMP_AFFINITY: 'nowarnings,compact,1,0,granularity=fine'}
+                env: { KMP_AFFINITY: 'nowarnings,compact,1,0,granularity=fine' }
             }
         )
         linpack.stdout.on('data', (data) => {
@@ -60,12 +65,18 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
             }
             else if (element.length > 2) {
                 if (element[7] !== 'pass') {
-                    console.log('\n\nFAIL - severe instability detected\n\n')
+                    console.log(
+                        '\n\n' +
+                        'FAIL - severe instability detected\n\n'
+                    )
                     linpack.kill()
                     process.exit()
                 }
                 if (residualCheck && element[5] !== residual) {
-                    console.log('\n\nRESIDUAL MISMATCH - instability detected (residual checks can be turned off in the config)\n\n')
+                    console.log(
+                        '\n\n' +
+                        'RESIDUAL MISMATCH - instability detected (residual checks can be turned off in the config)\n\n'
+                    )
                     linpack.kill()
                     process.exit()
                 }
@@ -92,11 +103,13 @@ function startRun(problemSize, leadingDimension, alignmentValue, timeToRun, redu
 }
 
 async function main() {
-    const config = JSON.parse(readFileSync(join(__dirname, '..', 'config.json')))
+    const config = require(join(__dirname, '..', 'config.json'))
+
     console.log(
         'Linpack Extended\n' +
         'https://github.com/BoringBoredom/Linpack-Extended'
     )
+
     for (const test of config['test order']) {
         const currentTest = config.tests[test.toString()]
         await startRun(
@@ -109,7 +122,12 @@ async function main() {
             config.settings['stop after residual mismatch']
         )
     }
-    console.log(`\n\nAll tests successfully passed - Residual checks are ${config.settings['stop after residual mismatch'] ? 'ON' : 'OFF'}\n\n`)
+
+    console.log(
+        '\n\n' +
+        'All tests successfully passed\n' +
+        `Residual checks are ${config.settings['stop after residual mismatch'] ? 'ON' : 'OFF'}\n\n`
+    )
 }
 
 main()

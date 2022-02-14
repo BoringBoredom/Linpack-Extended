@@ -1,0 +1,7 @@
+Shared-memory version of Intel(R) Distribution for LINPACK* Benchmark. *Other names and brands may be claimed as the property of others.
+Sample data file lininput_xeon64.
+15                     # number of tests
+1000 2000 5000 10000 15000 18000 20000 22000 25000 26000 27000 30000 35000 40000 45000 # problem sizes
+1000 2000 5008 10000 15000 18008 20016 22008 25000 26000 27000 30000 35000 40000 45000 # leading dimensions
+8 6 4 4 3 3 3 3 3 3 2 1 1 1 1 # times to run a test
+4 4 4 4 4 4 4 4 4 4 4 1 1 1 1 # alignment values (in KBytes)
