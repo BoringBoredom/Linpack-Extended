@@ -1,6 +1,6 @@
 {
     "test order": [
-        6, 1, 2, 3, 4, 5
+        7, 1, 6, 2, 5, 3, 4, 8
     ],
     "settings": {
         "reduce output below X problem size": 0,
@@ -9,25 +9,25 @@
     },
     "tests": {
         "1": {
-            "minutes": 15,
+            "minutes": 30,
             "problem size": 7920,
             "leading dimension": 7920,
             "alignment value": 4
         },
         "2": {
-            "minutes": 15,
+            "minutes": 30,
             "problem size": 11184,
             "leading dimension": 11184,
             "alignment value": 4
         },
         "3": {
-            "minutes": 15,
+            "minutes": 30,
             "problem size": 15824,
             "leading dimension": 15824,
             "alignment value": 4
         },
         "4": {
-            "minutes": 15,
+            "minutes": 30,
             "problem size": 22384,
             "leading dimension": 22384,
             "alignment value": 4
