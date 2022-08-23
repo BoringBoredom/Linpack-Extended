@@ -1,66 +1,22 @@
 {
-    "test order": [
-        7, 1, 6, 2, 5, 3, 4, 8
-    ],
-    "settings": {
-        "reduce output below X problem size": 0,
-        "track stats below X problem size": 0,
-        "stop after residual mismatch": true
-    },
-    "tests": {
-        "1": {
-            "minutes": 30,
-            "problem size": 7920,
-            "leading dimension": 7920,
-            "alignment value": 4
-        },
-        "2": {
-            "minutes": 30,
-            "problem size": 11184,
-            "leading dimension": 11184,
-            "alignment value": 4
-        },
-        "3": {
-            "minutes": 30,
-            "problem size": 15824,
-            "leading dimension": 15824,
-            "alignment value": 4
-        },
-        "4": {
-            "minutes": 30,
-            "problem size": 22384,
-            "leading dimension": 22384,
-            "alignment value": 4
-        },
-        "5": {
-            "minutes": 30,
-            "problem size": 31632,
-            "leading dimension": 31632,
-            "alignment value": 1
-        },
-        "6": {
-            "minutes": 30,
-            "problem size": 35376,
-            "leading dimension": 35376,
-            "alignment value": 1
-        },
-        "7": {
-            "minutes": 30,
-            "problem size": 38736,
-            "leading dimension": 38736,
-            "alignment value": 1
-        },
-        "8": {
-            "minutes": 30,
-            "problem size": 41840,
-            "leading dimension": 41840,
-            "alignment value": 1
-        },
-        "9": {
-            "minutes": 30,
-            "problem size": 44752,
-            "leading dimension": 44752,
-            "alignment value": 1
-        }
-    }
+   "test order": [2, 1],
+   "settings": {
+      "reduce output below X problem size": 0,
+      "track stats below X problem size": 0,
+      "stop after residual mismatch": true
+   },
+   "tests": {
+      "1": {
+         "minutes": 60,
+         "problem size": 3536,
+         "leading dimension": 3536,
+         "alignment value": 4
+      },
+      "2": {
+         "minutes": 60,
+         "problem size": 38736,
+         "leading dimension": 38736,
+         "alignment value": 1
+      }
+   }
 }
