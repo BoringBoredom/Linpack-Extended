@@ -1,6 +1,6 @@
 @echo off
 rem ============================================================================
-rem Copyright 2001-2021 Intel Corporation.
+rem Copyright 2001-2022 Intel Corporation.
 rem
 rem This software  and the related  documents  are Intel  copyrighted materials,
 rem and your use  of them is  governed by the express  license under  which they
@@ -21,8 +21,8 @@ echo *Other names and brands may be claimed as the property of others.
 SETLOCAL
 
 rem Setting path to OpenMP library
-set PATH=..\..\..\redist\intel64\compiler;%PATH%
-set PATH=..\..\..\redist\intel64_win\compiler;%PATH%
+set PATH=..\..\..\compiler\intel64;..\..\..\compiler\intel64_win;%PATH%
+set PATH=..\..\..\..\compiler\latest\windows\redist\intel64\compiler;..\..\..\..\compiler\latest\windows\redist\intel64_win\compiler;%PATH%
 rem Setting up affinity for better threading performance
 set KMP_AFFINITY=nowarnings,compact,1,0,granularity=fine
 
