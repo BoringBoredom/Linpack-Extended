@@ -1,6 +1,6 @@
 # [Download](https://github.com/BoringBoredom/Linpack-Extended/archive/refs/heads/master.zip)
 
-Linpack Extended is a stress test for 64-bit Intel processors. It is based on the latest Intel Math Kernel Library.
+Linpack Extended is a stress test based on the Intel Math Kernel Library.
 
 ### Features
 
@@ -12,10 +12,9 @@ Linpack Extended is a stress test for 64-bit Intel processors. It is based on th
 
 ### Requirements
 
-- Windows 7+ (also works on WinPE)
 - [vcruntime140.dll](https://aka.ms/vs/17/release/vc_redist.x64.exe)
-- 64-bit Intel processor
 
 ### Workarounds
 
+- AMD processor compatibility: Run `AMD Patch.bat`
 - OMP Error: set `KMP_AFFINITY` in the config to an empty string -> `"KMP_AFFINITY": ""`

@@ -3,7 +3,7 @@
   "settings": {
     "reduce output below X problem size": 0,
     "track stats below X problem size": 0,
-    "stop after residual mismatch": true,
+    "stop after residual mismatch": false,
     "KMP_AFFINITY": "nowarnings,compact,1,0,granularity=fine"
   },
   "tests": {
