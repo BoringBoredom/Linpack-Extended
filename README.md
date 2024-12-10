@@ -16,5 +16,4 @@ Linpack Extended is a stress test based on the Intel Math Kernel Library.
 
 ### Workarounds
 
-- AMD processor compatibility: Run `AMD Patch.bat`
 - OMP Error: set `KMP_AFFINITY` in the config to an empty string -> `"KMP_AFFINITY": ""`

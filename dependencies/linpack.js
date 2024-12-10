@@ -108,9 +108,7 @@ function startRun(
 
           if (gflops < min) {
             min = gflops;
-          }
-
-          if (gflops > max) {
+          } else if (gflops > max) {
             max = gflops;
           }
 
@@ -143,11 +141,11 @@ async function main() {
       currentTest["alignment value"],
       currentTest["minutes"] * 60000,
       currentTest["problem size"] <
-        config.settings["reduce output below X problem size"],
+        (config.settings["reduce output below X problem size"] ?? 0),
       currentTest["problem size"] <
-        config.settings["track stats below X problem size"],
+        (config.settings["track stats below X problem size"] ?? 0),
       config.settings["stop after residual mismatch"],
-      config.settings.KMP_AFFINITY
+      config.settings.KMP_AFFINITY ?? ""
     );
   }
 
