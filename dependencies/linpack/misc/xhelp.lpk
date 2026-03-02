@@ -19,13 +19,8 @@ Binaries and the running environment.
 
 Shared-memory (SMP) version of Intel(R) Distribution for LINPACK* Benchmark
 uses these names for the executables to be run:
-        linpack_xeon32.exe            Windows*, Intel(R) Xeon(R) 32-bit
-        linpack_xeon64.exe            Windows*, Intel(R) Xeon(R) 64-bit, supports
-                                                Automatic Offload mode
-        xlinpack_xeon32               Linux*, Intel(R) Xeon(R) 32-bit
-        xlinpack_xeon64               Linux*, Intel(R) Xeon(R) 64-bit, supports
-                                              Automatic Offload mode
-        linpack_cd64                  macOS*, Intel(R) Core(TM) microarchitecture 64-bit
+        linpack_xeon64.exe            Windows*, Intel(R) Xeon(R) 64-bit
+        xlinpack_xeon64               Linux*, Intel(R) Xeon(R) 64-bit
 
 The name 'linpack' stands for any of these binaries below in the text of this
 extended help information. 'the benchmark' shall stand for this shared-memory (SMP)
@@ -63,7 +58,6 @@ linpack
         See notes on the input data below.
         The output will contain the system information, input data and test results.
         See notes on the output data format below.
-        The "linpack_cd32" will hang without a data file.
 
 linpack -h[elp]
         prints brief usage information and quits
@@ -99,6 +93,35 @@ linpack < data_file
         greater number of the tests is specified.
         See the notes on the input data values and the output data format below.
 
+Sample run script
+
+The following is a sample run script for running a shared-memory version of
+Intel(R) Distribution for LINPACK* Benchmark. Change it to reflect
+the correct number of CPUs/threads, problem input files, etc.
+
+SETLOCAL
+
+rem Setting path to OpenMP library
+set PATH=..\..\..\..\compiler\bin;%PATH%
+rem Setting up affinity for better threading performance
+set KMP_AFFINITY=nowarnings,compact,1,0,granularity=fine
+
+date /t
+time /t
+
+echo Running linpack_xeon64.exe. Output could be found in win_xeon64.txt.
+linpack_xeon64.exe lininput_xeon64 > win_xeon64.txt
+
+date /t >> win_xeon64.txt
+time /t >> win_xeon64.txt
+
+echo    Done:
+date /t
+time /t
+
+ENDLOCAL
+
+
 Notes on the input data values for a shared-memory (SMP) version of 
   Intel(R) Distribution for LINPACK* Benchmark
 
@@ -119,10 +142,10 @@ test or trial may have a different memory requirement, but the program may
 exit if given a leading dimension and number of equations too large.
 The leading dimension must be no less than the number of equations.
 Experience has shown that the best performance for a given problem size
-is obtained when the leading dimension is set to the nearest odd
-multiple of 8 (16 for Intel(R) AVX processors) equal to or larger
-than the number of equations (divisible by 8 but not by 16, or
-divisible by 16 but not 32 for Intel(R) AVX processors).
+is often obtained when the leading dimension is set to a multiple of 8
+that is not a power of 2.
+Some experimentation may be required to find the optimal leading dimension
+for a given hardware architecture and problem size.
 Two other input values must be non-negative.
 The number of trials determines how many runs with the same initial data
 will be accomplished repeatedly.
@@ -144,11 +167,11 @@ match memory, here we will walk through an example.
 Suppose the target machine only has 4 GBytes of memory (and assuming that
 OS allows one to do a malloc of size 4 GB as well.)  Note that
 22000*22000*8 is 3.872 billion bytes, which is close to the maximum
-malloc size.  We can try a problem size of 22000 interactively first.
-If this is an Intel(R) Itanium(R) 2 processor, we find that a leading dimension
-of 22000 is a wise choice (hence 22000*22000*8).  There will be another
-things resident in memory, so 22000 may not fit.  If not, we can back
-off to 21000, or some other value as the largest problem.
+malloc size.  We can try a problem size of 22000 interactively first;
+we may find that a leading dimension of 22000 is a wise choice
+(hence 22000*22000*8).  There will be other things resident in memory,
+so 22000 may not fit.  If not, we can back off to 21000, or some other
+value as the largest problem.
 
 For example, in a sample run of 5000, we observe on the output line (see below):
 
@@ -186,19 +209,19 @@ file shown above:
         Maximum memory requested that can be used = 200104096, at the size = 5000
         ============= Timing linear equation system solver =================
 
-        Size   LDA    Align. Time(s)    GFlops   Residual      Residual(norm)
-        1000   1000   4      0.197      3.3956   1.104141e-12 3.765403e-02
-        1000   1000   4      0.194      3.4435   1.104141e-12 3.765403e-02
-        1000   1000   4      0.195      3.4349   1.104141e-12 3.765403e-02
-        1000   1000   4      0.195      3.4325   1.104141e-12 3.765403e-02
-        2000   2008   4      1.160      4.6047   4.613973e-12 4.013591e-02
-        2000   2008   4      1.157      4.6177   4.613973e-12 4.013591e-02
-        2000   2008   4      1.159      4.6086   4.613973e-12 4.013591e-02
-        2000   2008   4      1.158      4.6114   4.613973e-12 4.013591e-02
-        3000   3000   4      3.478      5.1810   9.879433e-12 3.804333e-02
-        3000   3000   4      3.462      5.2044   9.879433e-12 3.804333e-02
-        4000   4008   4      7.759      5.5029   1.898731e-11 4.138464e-02
-        5000   5000   4      14.654     5.6901   2.307041e-11 3.216983e-02
+        Size   LDA    Align. Time(s)    GFlops   Residual     Residual(norm) Check
+        1000   1000   4      0.197      3.3956   1.104141e-12 3.765403e-02   pass
+        1000   1000   4      0.194      3.4435   1.104141e-12 3.765403e-02   pass
+        1000   1000   4      0.195      3.4349   1.104141e-12 3.765403e-02   pass
+        1000   1000   4      0.195      3.4325   1.104141e-12 3.765403e-02   pass
+        2000   2008   4      1.160      4.6047   4.613973e-12 4.013591e-02   pass
+        2000   2008   4      1.157      4.6177   4.613973e-12 4.013591e-02   pass
+        2000   2008   4      1.159      4.6086   4.613973e-12 4.013591e-02   pass
+        2000   2008   4      1.158      4.6114   4.613973e-12 4.013591e-02   pass
+        3000   3000   4      3.478      5.1810   9.879433e-12 3.804333e-02   pass
+        3000   3000   4      3.462      5.2044   9.879433e-12 3.804333e-02   pass
+        4000   4008   4      7.759      5.5029   1.898731e-11 4.138464e-02   pass
+        5000   5000   4      14.654     5.6901   2.307041e-11 3.216983e-02   pass
 
         Performance Summary (GFlops)
 
@@ -208,6 +231,8 @@ file shown above:
         3000   3000   4       5.1927   5.2044
         4000   4008   4       5.5029   5.5029
         5000   5000   4       5.6901   5.6901
+
+        Residual checks PASSED
 
         End of tests
 
@@ -219,8 +244,9 @@ The columns of the results listing can be described as follows:
         Time = Benchmarked Time to solve the system in Seconds
         Gflops = Number of Gflops
         Residual = Should be a small number  like E-09 or less
-        Residual(norm) = The norm of the vector - a number in the range .01-1000
+        Residual(norm) = The normalized residual - a number in the range .01-100
         typically.
+        Check = pass or FAIL based on normalized residual
 
 The performance summary listing presents accumulated results for each test.
 The columns can be described as follows:
@@ -246,4 +272,4 @@ and other countries.
 
 * Other names and brands may be claimed as the property of others
 
-Copyright 2000-2021, Intel Corporation.
+Copyright (C) 2000 Intel Corporation
